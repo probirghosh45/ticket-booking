@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" /> 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <!-- icon -->
+    <link rel="icon" href="images/icon.png" type="image/x-icon"/>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <!--Header and Menu Section-->
+    <header class="container py-4">
+        <nav>
+            <ul>
+                <li><a class="active" href="index.html">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a  href="#">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!--Booking Section-->
+    <section class="main-content container"  id="booking-area"  >
+        <div class="booking-form" >
+            <h3>Booking Flights</h3>
+            <div class="input-group">
+                <label for="">Flying From</label>
+                <input class="inp-style" type="text" name="" placeholder="Dhaka,Bangladesh">
+            </div>
+            <div class="input-group">
+                <label for="">Flying To</label>
+                <input class="inp-style" type="text" name="" placeholder="New York,United States">
+            </div>
+            <div class="inputs">
+                <div class="input-group">
+                    <label" for="">Departure</label>
+                    <input class="inp-style" type="date" name="">
+                </div>
+                <div class="input-group">
+                    <label for="">Return</label>
+                    <input class="inp-style" type="date" name="">
+                </div>
+            </div>
+            <div class="input-group f-class">
+                <div>
+                    <label for="">First Class ($150)</label><br>
+                    <label class="span-text" for="">First Class Sub-Total (<span   id="firstClassTicket-total"> $150</span>)</label>
+                    <input  id="firstClassTicket-count"  class="inp-style inp-width" type="number" name="" value="0">
+                </div>
+
+                <div class="pt-5">
+                    <button onclick="handleTicketChange( 'firstClassTicket' , true)"  class="btn btn-primary"><i class="fas fa-plus"></i></button>
+                    <button onclick="handleTicketChange( 'firstClassTicket' , false)"  class="btn btn-danger "><i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            
+            <div class="input-group e-class">
+                <div>
+                    <label for="">Economy ($100)</label><br>
+                    <label for="" class="span-text">Economy Sub-Total (<span id="economyClassTicket-total">$100</span>) </label>
+                    <input id="economyClassTicket-count" class="inp-style inp-width" type="number" name="" value="0">
+                </div>
+                <div class="pt-5">
+                    <button onclick="handleTicketChange ('economyClassTicket' , true)"  class="btn btn-primary"><i class="fas fa-plus"></i></button>
+                    <button onclick="handleTicketChange ('economyClassTicket' , false)"  class="btn btn-danger"><i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="calculations">
+                <div class="amount">
+                    <div class="left">
+                        <p>Subtotal</p>
+                    </div>
+                    <div id="total-price"  class="right">
+                        <p>$0</p>
+                    </div>
+                </div>
+
+                <div class="amount">
+                    <div class="left">
+                        <p>Charge 10% VAT</p>
+                    </div>
+                    <div   id='vat-amount'  class="right">
+                        <p>$0</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="amount">
+                    <div class="left">
+                        <h4>Total</h4>
+                    </div>
+                    <div id="grand-total" class="right">
+                        <p>$0</p>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-style" id="ticket-booked">Book Now</button>
+        </div>
+
+        <div class="booking-content">
+            <h1>discover <br> around the world</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicingelit. Provident voluptatibus quam fuga laborumalias veniam libero autem quasi maxime ullam vero nama imi dolor, architecto ab facilis eaque deserunt nobise voluptatibus quam</p>
+        </div>
+        
+    </section>
+
+    <section class="container py-5">
+        <div id="confirmation-area">
+            <p class="text-center">Flight Ticket Booking Completed.Thanks for Contacting US! <br> We will Send You a Verification Email Shortly.</p>
+        </div>
+    </section>
+
+    <script>
+            
+        function handleTicketChange(ticket, isIncrease) {
+
+            const ticketCount = getInputValue(ticket);
+            let ticketNewCount = ticketCount;
+            if (isIncrease == true) {
+                ticketNewCount = ticketCount + 1;
+            }
+
+            if (isIncrease == false && ticketCount > 0) {
+                ticketNewCount = ticketCount - 1;
+            }
+
+            document.getElementById(ticket + '-count').value = ticketNewCount;
+            let ticketTotal = 0;
+            if (ticket == 'firstClassTicket') {
+                ticketTotal = ticketNewCount * 150;
+            }
+
+            if (ticket == 'economyClassTicket') {
+                ticketTotal = ticketNewCount * 100;
+            }
+
+            document.getElementById(ticket + '-total').innerText = '$' + ticketTotal;
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const firstClassTicketCount = getInputValue('firstClassTicket');
+            const economyClassTicketCount = getInputValue('economyClassTicket');
+
+            const totalPrice = firstClassTicketCount * 150 + economyClassTicketCount * 100;
+            document.getElementById('total-price').innerText = '$' + totalPrice;
+
+            const vat = Math.round(totalPrice * 0.1);
+            document.getElementById('vat-amount').innerText = '$' + vat;
+
+            const grandTotal = totalPrice + vat;
+            document.getElementById('grand-total').innerText = '$' + grandTotal;
+        }
+
+        function getInputValue(ticket) {
+            console.log(ticket);
+            const ticketInput = document.getElementById(ticket + '-count');
+            const ticketCount = parseInt(ticketInput.value);
+            return ticketCount;
+        }
+
+        //Book Now button event handler 
+        const ticketBookedBtn=document.getElementById("ticket-booked");
+        ticketBookedBtn.addEventListener("click",function(){
+
+            const bookingArea = document.getElementById("booking-area")
+            bookingArea.style.display="none";
+
+            const TicketConfirmationArea = document.getElementById("confirmation-area")
+            TicketConfirmationArea.style.display="block";
+
+        })
+
+ 
+            
+    </script>
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    
+    <!--     
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+    -->
+</body>
+
+</html>
